@@ -4,12 +4,6 @@
 # Must be able to take money from register
 # Must be able to dispense change for dollar amounts
 
-
-
-
-
-
-
 class Register
   def initialize
     @register = { 20 => 0, 10 => 0, 5 => 0, 2 => 0, 1 => 0 }
@@ -18,10 +12,9 @@ class Register
   def total
     total = 0
     @register.each_pair do |bill_amount, quantity|
-      puts "#{bill_amount} => #{quantity}"
       total += bill_amount * quantity
     end
-    return total
+    return "the total amount in the cash register is $#{total}"
   end
 
   def add_money(new_money)
@@ -137,7 +130,6 @@ class Register
         outstanding1 = @register[1] - ones_requested
         new_register1 = 0
     end
-    
     outstanding1 = outstanding1.abs * 1
 
     if outstanding1 > 0
@@ -150,8 +142,14 @@ class Register
       @register[1] = new_register1
     end
   end
-
 end
+
+# Add 2 $20 bills, 4 $10 bills, 6 $5 bills, 4 $2 bills, 10 $1 bills to an empty register so that it ends up with a value of $128 total
+# Take 1 $20, 4 $10 bills, 3 $5 bills and 10 $1 bills from the register leaving it with $43 total
+# Make change for $11 with what is now in the register.  This should succeed, leaving $32 total
+# Make change for $14.  This should fail.
+
+# wrong, there are not the correct bills in the register to make change for 11, but there is enough to make change for $14
 
 register = Register.new
 puts register.total
@@ -192,10 +190,10 @@ end
 end
 puts register.total
 
+puts 'take 11 (not enough ones to make change, should return error)'
 register.take_money(11)
 puts register.total
 
-# Add 2 $20 bills, 4 $10 bills, 6 $5 bills, 4 $2 bills, 10 $1 bills to an empty register so that it ends up with a value of $128 total
-# Take 1 $20, 4 $10 bills, 3 $5 bills and 10 $1 bills from the register leaving it with $43 total
-# Make change for $11 with what is now in the register.  This should succeed, leaving $32 total
-# Make change for $14.  This should fail.
+puts 'take 14'
+register.take_money(14)
+puts register.total
